@@ -3,11 +3,85 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Мой сайт{% endblock %}</title>
-    <link rel="stylesheet" href="{% static 'main/style/main.css' %}">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Доставка пиццы и другого в Ногинске{% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{% static 'main/css/main.css' %}">
+    <link rel="shortcut icon" href="{% static 'main/images/logo.svg' %}" sizes="32x32">
 </head>
 <body>
+    <header>
+        <div class="top-header">
+            <div class="container">
+                <div class="top-header-contact">
+                    <span>+7 123-456-78-90</span>
+                </div>
+            </div>
+        </div>
+        <nav class="navbar">
+            <br><br>
+            <div class="container">
+                <div class="logotype">
+                    <a href="{% url 'home' %}" class="logo">Мама-Мия, Пицца! и всё-всё-всё...</a>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="{% url 'home' %}">Главная</a></li>
+                    {% if user.is_authenticated and user.is_courier %}
+                    <li><a href="{% url 'courier_panel' %}">Курьерская</a></li>
+                    {% endif %}
+                    <li><a href="#menu">Меню</a></li>
+                </ul>
+                <div class="auth-cart">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'logout' %}" class="auth-btn">Выйти</a>
+                    {% else %}
+                        <a href="{% url 'login' %}" class="auth-btn">Войти</a>
+                    {% endif %}
+                    <a id="cart-link" href="{% url 'cart' %}" class="cart-btn">Корзина</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
     {% block content %}{% endblock %}
-    <script src="{% static 'main/js/script.js' %}"></script>
+
+    <script src="{% static 'main/js/menu.js' %}"></script>
+
+    <footer>
+        <div class="container footer-container">
+            <div class="footer-column">
+                <h3>О нас</h3>
+                <ul>
+                    <li><a href="#">О нас</a></li>
+                    <li><a href="#">Наша команда</a></li>
+                    <li><a href="#">Стань одним из нас</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Помощь</h3>
+                <ul>
+                    <li><a href="#support">Поддержка</a></li>
+                    <li><a href="#contact">Контакты</a></li>
+                    <li><a href="#faq">Возможные вопрос</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Наши соц-сети</h3>
+                <ul>
+                    <li><a href="https://instagram.com" target="_blank">Instagram</a></li>
+                    <li><a href="https://twitter.com" target="_blank">Twitter</a></li>
+                    <li><a href="https://facebook.com" target="_blank">Facebook</a></li>
+                </ul>
+            </div>
+        </div>
+        <br><br>
+        <div class="container">
+            <p>&copy; Юманов Артём 2025 Ногинск.</p>
+        </div>
+    </footer>
 </body>
 </html>

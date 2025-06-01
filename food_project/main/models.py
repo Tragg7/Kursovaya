@@ -32,6 +32,7 @@ class Order(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="orders")
     status = models.CharField(max_length=100, choices=STATUS_CHOICES, default="Курьер забрал заказ и направляется к вам")
+    courier = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="deliveries")
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

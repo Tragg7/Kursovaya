@@ -1,6 +1,41 @@
-{% extends 'main/base.html' %}
-{% block title %}Главная{% endblock %}
+{% extends "main/base.html" %}
 
+{% load static %}
+{% block title %}Главная — Меню{% endblock %}
 {% block content %}
-<h1>Добро пожаловать!</h1>
+
+<section id="menu" class="menu">
+    <div class="container">
+        <h2>Наше Меню</h2>
+
+        <div class="category-buttons">
+            <button onclick="filterProducts('all')">Все</button>
+            <button onclick="filterProducts('Горячее')">Горячее</button>
+            <button onclick="filterProducts('Второе')">Второе</button>
+            <button onclick="filterProducts('Напитки')">Напитки</button>
+            <button onclick="filterProducts('Десерты')">Десерты</button>
+        </div>
+        <br>
+
+        <div class="menu-categories">
+            <ul id="product-list">
+                {% for product in products %}
+                <li class="product" data-category="{{ product.category }}">
+                    <img src="{{ product.image.url }}">
+                    <h3>{{ product.name }}</h3>
+                    <p>Цена: {{ product.price }} руб.</p>
+                    <form method="post" action="{% url 'add_to_cart' %}">
+                         {% csrf_token %}
+                         <input type="hidden" name="product_id" value="{{ product.id }}">
+                         <input type="hidden" name="quantity" value="1">
+                         <button type="submit" class="add-to-cart-btn">Добавить в корзину</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</section>
+
+<script src="{% static 'main/js/menu.js' %}"></script>
 {% endblock %}

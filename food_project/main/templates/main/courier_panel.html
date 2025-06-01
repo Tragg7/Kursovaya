@@ -1,0 +1,55 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %}Курьерская панель{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'main/css/panel.css' %}">
+<link rel="stylesheet" href="{% static 'main/css/cart.css' %}">
+<link rel="stylesheet" href="{% static 'main/css/cour.css' %}">
+
+<div class="admin-container">
+    <h1>Ваши заказы</h1>
+    <div class="admin-section">
+        <table id="order-list">
+            <thead>
+                <tr>
+                    <th>Номер заказа</th>
+                    <th>Текущий статус</th>
+                    <th>Изменить статус</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+    <div class="order-block">
+        <p><strong>Заказ №{{ order.id }}</strong> от {{ order.user.username }}</p>
+        <p>Статус: {{ order.status }}</p>
+        <ul>
+            {% for item in order.items.all %}
+                <li>{{ item.product.name }} x {{ item.quantity }}</li>
+            {% endfor %}
+        </ul>
+        {% if not order.courier %}
+            <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="order_id" value="{{ order.id }}">
+                <input type="hidden" name="status" value="Курьер забрал заказ и направляется к вам">
+                <button type="submit">Взять заказ</button>
+            </form>
+                {% else %}
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="order_id" value="{{ order.id }}">
+                        <select name="status">
+                            <option value="Курьер забрал заказ и направляется к вам" {% if order.status == "Курьер забрал заказ и направляется к вам" %}selected{% endif %}>В пути</option>
+                            <option value="Заказ доставлен" {% if order.status == "Заказ доставлен" %}selected{% endif %}>Доставлен</option>
+                        </select>
+                        <button type="submit">Обновить</button>
+                    </form>
+                {% endif %}
+    </div>
+        {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

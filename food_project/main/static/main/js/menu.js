@@ -1,7 +1,5 @@
 function filterProducts(category) {
-    const productList = document.getElementById('product-list');
-    const products = productList.querySelectorAll('.product');
-
+    const products = document.querySelectorAll('.product');
     products.forEach(product => {
         if (category === 'all' || product.dataset.category === category) {
             product.style.display = 'block';

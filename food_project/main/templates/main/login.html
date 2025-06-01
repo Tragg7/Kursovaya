@@ -1,20 +1,21 @@
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Авторизация</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-    <link rel="shortcut icon" href="../static/images/logo.svg"/ sizes="32x32">
-</head>
-{% extends 'main/base.html' %}
-{% block content %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+{% load static %}
+{% block title %}Авторизация{% endblock %}
 
-<h2>Вход</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Войти</button>
-</form>
+{% block content %}
+<link rel="stylesheet" href="{% static 'main/css/cart.css' %}">
+
+<div class="container auth-container">
+    <h2>Войти</h2>
+    <br>
+    <form action="{% url 'login' %}" method="post" class="auth-form">
+        {% csrf_token %}
+        <label for="username">Имя пользователя</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">Пароль</label>
+        <input type="password" id="password" name="password" required>
+        <button type="submit" class="auth-btn">Войти</button>
+    </form>
+    <br>
+    <p>Нет аккаунта? <a href="{% url 'register' %}">Зарегистрироваться</a></p>
+</div>
 {% endblock %}

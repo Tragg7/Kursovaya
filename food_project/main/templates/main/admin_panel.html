@@ -1,0 +1,46 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %}Панель администратора{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'main/style/panel.css' %}">
+<link rel="stylesheet" href="{% static 'main/style/cart.css' %}">
+
+<div class="admin-container">
+    <h1>Добро пожаловать, {{ user.username }}</h1>
+    <div class="admin-sections">
+        <div class="admin-section">
+            <h2>Товары</h2>
+            <br>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="text" name="product_name" placeholder="Название товара" required>
+                <input type="number" name="product_price" placeholder="Цена товара">
+                <select name="category">
+                    <option value="Горячее">Горячее</option>
+                    <option value="Второе">Второе</option>
+                    <option value="Напитки">Напитки</option>
+                    <option value="Десерты">Десерты</option>
+                </select>
+                <input type="file" name="product_image">
+
+                <button type="submit" name="action4" value="create">Добавить товар</button>
+                <button type="submit" name="action4" value="delete">Удалить товар</button>
+            </form>
+            <ul class="product-list">
+                {% for p in products %}
+                    <li>{{ p.name }} — {{ p.price }} руб. ({{ p.category }})</li>
+                {% empty %}
+                    <li>Пока нет товаров.</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <form method="post" action="{% url 'admin_panel' %}">
+        {% csrf_token %}
+            <input type="text" name="courier_username" placeholder="Имя пользователя" required>
+            <input type="password" name="courier_password" placeholder="Пароль" required>
+            <button type="submit">Создать учетную запись курьера</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
