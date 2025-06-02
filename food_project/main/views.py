@@ -189,3 +189,8 @@ def add_to_cart_view(request):
 
     request.session['cart'] = cart
     return redirect('cart')
+
+@login_required
+def my_orders_view(request):
+    orders = request.user.orders.prefetch_related("items__product").order_by("-created_at")
+    return render(request, "main/my_orders.html", {"orders": orders})
