@@ -2,7 +2,7 @@ services:
   - type: web
     name: django-app
     env: python
-    buildCommand: "pip install -r requirements.txt"
+    buildCommand: "pip install -r ../food_project/requirements.txt"
     startCommand: "gunicorn config.wsgi"
     envVars:
       - key: DJANGO_SECRET_KEY
