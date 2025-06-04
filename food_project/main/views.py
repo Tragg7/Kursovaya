@@ -40,7 +40,7 @@ def login_view(request):
     return render(request, 'main/login.html', {'form': form})
 
 def is_admin(user):
-    return user.is_authenticated and user.is_superuser  # или user.is_admin, если у тебя кастомная роль
+    return user.is_authenticated and user.is_superuser
 
 def logout_view(request):
     logout(request)
@@ -48,14 +48,13 @@ def logout_view(request):
 
 @login_required
 def cart_view(request):
-    # Пример данных (в будущем заменим на реальные из базы данных или сессии)
     cart_items = request.session.get('cart', [])
     total = sum(item["price"] * item["quantity"] for item in cart_items)
 
     context = {
         "cart_items": cart_items,
         "total": total,
-        "range": range(1, 11),  # вот это и используется в шаблоне
+        "range": range(1, 11),
     }
     return render(request, 'main/cart.html', context)
 
@@ -82,7 +81,6 @@ def admin_panel_view(request):
 
 
         elif request.POST.get("courier_username"):
-            # логика создания курьера
             username = request.POST.get("courier_username")
             password = request.POST.get("courier_password")
 
@@ -106,7 +104,7 @@ def courier_panel_view(request):
         try:
             order = Order.objects.get(id=order_id)
             order.status = new_status
-            order.courier = request.user  # Назначаем курьера
+            order.courier = request.user
             order.save()
         except Order.DoesNotExist:
             pass
@@ -117,7 +115,6 @@ def courier_panel_view(request):
 @require_POST
 @login_required
 def update_quantity_view(request, item_name):
-    # Пример: обновляем количество товара в сессии (пока заглушка)
     quantity = int(request.POST.get('quantity', 1))
     cart = request.session.get('cart', [])
 
@@ -136,10 +133,9 @@ def checkout_view(request):
     if not cart:
         return redirect('cart')
 
-    # СОЗДАЁМ ЗАКАЗ
     order = Order.objects.create(
         user=request.user,
-        courier=None  # Пока курьера нет — назначай вручную позже
+        courier=None
     )
 
     for item in cart:
@@ -175,7 +171,6 @@ def add_to_cart_view(request):
 
     cart = request.session.get('cart', [])
 
-    # Проверка — если товар уже есть, увеличить количество
     for item in cart:
         if item['name'] == product.name:
             item['quantity'] += quantity

@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 # --- Пользователь ---
 class User(AbstractUser):
     is_courier = models.BooleanField(default=False)
-    is_admin = models.BooleanField(default=False)  # используется для /panel доступа
+    is_admin = models.BooleanField(default=False)
 
 # --- Блюда ---
 class Product(models.Model):
