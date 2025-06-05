@@ -5,8 +5,13 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth import get_user_model
 from django.views.decorators.http import require_POST
 from .forms import CustomUserCreationForm
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from django.db import models
+
+import os
+import shutil
 
 from .models import Product
 
