@@ -1,7 +1,9 @@
 {% extends "main/base.html" %}
-
 {% load static %}
+{% load humanize %}  {# на всякий случай, если форматируешь цены #}
+
 {% block title %}Главная — Меню{% endblock %}
+
 {% block content %}
 <section id="menu" class="menu">
     <div class="container">
@@ -20,7 +22,7 @@
             <ul id="product-list">
                 {% for product in products %}
                 <li class="product" data-category="{{ product.category }}">
-                    <img src="{{ product.image.url }}">
+                    <img src="{% static 'uploads/' %}{{ product.image.name|cut:'uploads/' }}" alt="{{ product.name }}">
                     <h3>{{ product.name }}</h3>
                     <p>Цена: {{ product.price }} руб.</p>
                     <form method="post" action="{% url 'add_to_cart' %}">
